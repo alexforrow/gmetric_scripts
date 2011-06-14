@@ -2,7 +2,7 @@
 <?php
 require('fastcgi.php');
 
-$client = new FCGIClient('localhost', '9003');
+$client = new FCGIClient('localhost', '9000');
 $data = $client->request(
 	array(       
 		'REQUEST_METHOD' => 'GET',
