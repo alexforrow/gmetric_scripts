@@ -1,6 +1,6 @@
 #!/usr/bin/php
 <?php
-require('/usr/lib64/php/fastcgi.php');
+require('fastcgi.php');
 
 $client = new FCGIClient('localhost', '9003');
 $data = $client->request(
