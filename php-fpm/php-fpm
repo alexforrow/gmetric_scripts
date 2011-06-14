@@ -1,0 +1,24 @@
+#!/usr/bin/php
+<?php
+require('/usr/lib64/php/fastcgi.php');
+
+$client = new FCGIClient('localhost', '9003');
+$data = $client->request(
+	array(       
+		'REQUEST_METHOD' => 'GET',
+		'SCRIPT_FILENAME' => '/fpm-status',
+		'QUERY_STRING' => '?json',
+		'SCRIPT_NAME' => '/fpm-status',
+	),
+	null
+);
+
+list(,$json) = explode("\r\n\r\n", $data);
+
+$data = json_decode($json, true);
+
+$active_processes = $data['active processes'];
+$idle_processes = $data['idle processes'];
+
+system("/usr/bin/gmetric --name=php_fpm_active --value=$active_processes --type=uint32 --units=processes");
+system("/usr/bin/gmetric --name=php_fpm_idle --value=$idle_processes --type=uint32 --units=processes");
